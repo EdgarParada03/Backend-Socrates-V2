@@ -3,7 +3,6 @@ package com.example.SocratesBackend.modelos;
 import jakarta.persistence.*;
 
 
-
 @Entity(name = "tipos_planes")
 public class TipoPlan {
 
