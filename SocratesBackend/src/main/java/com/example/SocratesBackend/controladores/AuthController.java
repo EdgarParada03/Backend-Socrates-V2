@@ -15,8 +15,8 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public Map<String, String> login(@RequestParam String numeroDocumento, @RequestParam String password) {
-        return authService.authenticate(numeroDocumento, password);
+    public Map<String, String> login(@RequestParam String codigoEmpleado, @RequestParam String password) {
+        return authService.authenticate(codigoEmpleado, password);
     }
 
 }
