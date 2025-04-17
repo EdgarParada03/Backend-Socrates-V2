@@ -51,8 +51,6 @@ public class Empleado {
         this.contactoEmergenciaTelefono = contactoEmergenciaTelefono;
     }
 
-    // Getters y Setters
-
     public long getId() {
         return id;
     }
