@@ -1,5 +1,6 @@
 package com.example.SocratesBackend.modelos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import java.util.Date;
 
@@ -18,12 +19,12 @@ public class Contrato {
     @JoinColumn(name = "servicio_id")
     private Servicio servicio;
 
-    @Column(name = "fecha_inicio")
-    @Temporal(TemporalType.DATE)
+    @Column(name = "fecha_inicio", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "UTC")
     private Date fechaInicio;
 
-    @Column(name = "fecha_fin")
-    @Temporal(TemporalType.DATE)
+    @Column(name = "fecha_fin", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "UTC")
     private Date fechaFin;
 
     @Column(name = "estado")
