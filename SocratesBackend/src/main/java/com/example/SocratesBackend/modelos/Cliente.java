@@ -8,8 +8,10 @@ import java.util.Date;
 public class Cliente extends Persona {
 
     @Temporal(TemporalType.DATE)
+    @Column(name = "fecha_registro")
     private Date fechaRegistro;
 
+    @Column(name = "tipo_cliente")
     private String tipoCliente;
 
     public Cliente() {}

@@ -10,29 +10,53 @@ public class Persona {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "primer_nombre")
     private String primerNombre;
+
+    @Column(name = "segundo_nombre")
     private String segundoNombre;
+
+    @Column(name = "primer_apellido")
     private String primerApellido;
+
+    @Column(name = "segundo_apellido")
     private String segundoApellido;
+
+    @Column(name = "tipo_identificacion")
     private String tipoIdentificacion;
+
+    @Column(name = "numero_identificacion")
     private String numeroIdentificacion;
+
+    @Column(name = "sexo")
     private String sexo;
+
+    @Column(name = "correo_electronico")
     private String correoElectronico;
+
+    @Column(name = "telefono")
     private String telefono;
 
     @Temporal(TemporalType.DATE)
+    @Column(name = "fecha_nacimiento")
     private Date fechaNacimiento;
 
+    @Column(name = "lugar_residencia")
     private String lugarResidencia;
+
+    @Column(name = "direccion_casa")
     private String direccionCasa;
+
+    @Column(name = "barrio")
     private String barrio;
+
+    @Column(name = "estado")
     private boolean estado;
 
-    public Persona() {
-    }
+    public Persona() {}
 
     public Persona(Long id, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String tipoIdentificacion, String numeroIdentificacion, String sexo, String correoElectronico, String telefono, Date fechaNacimiento, String lugarResidencia, String direccionCasa, String barrio, boolean estado) {
         this.id = id;
@@ -171,6 +195,4 @@ public class Persona {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
-
-
 }
