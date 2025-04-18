@@ -9,9 +9,8 @@ import java.util.Date;
 @DiscriminatorValue("CLIENTE")
 public class Cliente extends Persona {
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "fecha_registro")
-    private LocalDate  fechaRegistro;
+    private LocalDate fechaRegistro;
 
 
     @Column(name = "tipo_cliente")
