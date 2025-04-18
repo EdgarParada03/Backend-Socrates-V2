@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/v1")
 public class ClienteController {
 
@@ -57,7 +57,6 @@ public class ClienteController {
         cliente.setDireccionCasa(clienteDetails.getDireccionCasa());
         cliente.setBarrio(clienteDetails.getBarrio());
         cliente.setEstado(clienteDetails.isEstado());
-
         cliente.setFechaRegistro(clienteDetails.getFechaRegistro());
         cliente.setTipoCliente(clienteDetails.getTipoCliente());
 
@@ -75,5 +74,12 @@ public class ClienteController {
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return ResponseEntity.ok(response);
+    }
+
+    // Verificar si la cédula ya está registrada
+    @GetMapping("/clientes/verificar-cedula/{cedula}")
+    public ResponseEntity<Boolean> verificarCedulaExistente(@PathVariable String cedula) {
+        boolean existe = clienteRepository.existsByNumeroIdentificacion(cedula);  // Verifica si existe la cédula en la base de datos
+        return ResponseEntity.ok(existe);  // Retorna true si existe, false si no existe
     }
 }
