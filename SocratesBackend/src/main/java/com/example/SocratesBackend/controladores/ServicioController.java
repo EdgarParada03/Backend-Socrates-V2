@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = {"http://localhost:4200"} , allowCredentials = "true")
 @RequestMapping("/api/v1")
 public class ServicioController {
 
