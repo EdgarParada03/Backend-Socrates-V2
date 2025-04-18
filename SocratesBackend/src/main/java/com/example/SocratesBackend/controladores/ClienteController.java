@@ -39,29 +39,39 @@ public class ClienteController {
 
     // Actualizar cliente
     @PutMapping("/clientes/{id}")
-    public ResponseEntity<Cliente> updateCliente(@PathVariable Long id, @RequestBody Cliente clienteDetails) {
-        Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cliente no existe con el id: " + id));
+    public ResponseEntity<?> updateCliente(@PathVariable Long id, @RequestBody Cliente clienteDetails) {
+        try {
+            Cliente cliente = clienteRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Cliente no existe con el id: " + id));
 
-        cliente.setPrimerNombre(clienteDetails.getPrimerNombre());
-        cliente.setSegundoNombre(clienteDetails.getSegundoNombre());
-        cliente.setPrimerApellido(clienteDetails.getPrimerApellido());
-        cliente.setSegundoApellido(clienteDetails.getSegundoApellido());
-        cliente.setTipoIdentificacion(clienteDetails.getTipoIdentificacion());
-        cliente.setNumeroIdentificacion(clienteDetails.getNumeroIdentificacion());
-        cliente.setSexo(clienteDetails.getSexo());
-        cliente.setCorreoElectronico(clienteDetails.getCorreoElectronico());
-        cliente.setTelefono(clienteDetails.getTelefono());
-        cliente.setFechaNacimiento(clienteDetails.getFechaNacimiento());
-        cliente.setLugarResidencia(clienteDetails.getLugarResidencia());
-        cliente.setDireccionCasa(clienteDetails.getDireccionCasa());
-        cliente.setBarrio(clienteDetails.getBarrio());
-        cliente.setEstado(clienteDetails.isEstado());
-        cliente.setFechaRegistro(clienteDetails.getFechaRegistro());
-        cliente.setTipoCliente(clienteDetails.getTipoCliente());
+            // Actualizar los campos
+            cliente.setPrimerNombre(clienteDetails.getPrimerNombre());
+            cliente.setSegundoNombre(clienteDetails.getSegundoNombre());
+            cliente.setPrimerApellido(clienteDetails.getPrimerApellido());
+            cliente.setSegundoApellido(clienteDetails.getSegundoApellido());
+            cliente.setTipoIdentificacion(clienteDetails.getTipoIdentificacion());
+            cliente.setNumeroIdentificacion(clienteDetails.getNumeroIdentificacion());
+            cliente.setSexo(clienteDetails.getSexo());
+            cliente.setCorreoElectronico(clienteDetails.getCorreoElectronico());
+            cliente.setTelefono(clienteDetails.getTelefono());
+            cliente.setFechaNacimiento(clienteDetails.getFechaNacimiento());
+            cliente.setLugarResidencia(clienteDetails.getLugarResidencia());
+            cliente.setDireccionCasa(clienteDetails.getDireccionCasa());
+            cliente.setBarrio(clienteDetails.getBarrio());
+            cliente.setEstado(clienteDetails.isEstado());
+            cliente.setFechaRegistro(clienteDetails.getFechaRegistro());
+            cliente.setTipoCliente(clienteDetails.getTipoCliente());
 
-        Cliente updatedCliente = clienteRepository.save(cliente);
-        return ResponseEntity.ok(updatedCliente);
+            // Guardar cliente actualizado
+            Cliente updatedCliente = clienteRepository.save(cliente);
+
+            return ResponseEntity.ok(updatedCliente);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace(); // Para ver el error en consola
+            return ResponseEntity.status(500).body("Error al actualizar el cliente: " + e.getMessage());
+        }
     }
 
     // Eliminar cliente

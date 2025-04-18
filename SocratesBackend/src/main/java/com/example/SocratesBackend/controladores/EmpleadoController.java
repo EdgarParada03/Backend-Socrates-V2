@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"*"})
 @RequestMapping("/api/v1")
 public class EmpleadoController {
 
@@ -43,20 +43,6 @@ public class EmpleadoController {
         Empleado empleado = empleadoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Empleado no existe con id: " + id));
 
-        empleado.setPrimerNombre(empleadoDetails.getPrimerNombre());
-        empleado.setSegundoNombre(empleadoDetails.getSegundoNombre());
-        empleado.setPrimerApellido(empleadoDetails.getPrimerApellido());
-        empleado.setSegundoApellido(empleadoDetails.getSegundoApellido());
-        empleado.setTipoIdentificacion(empleadoDetails.getTipoIdentificacion());
-        empleado.setNumeroIdentificacion(empleadoDetails.getNumeroIdentificacion());
-        empleado.setSexo(empleadoDetails.getSexo());
-        empleado.setCorreoElectronico(empleadoDetails.getCorreoElectronico());
-        empleado.setTelefono(empleadoDetails.getTelefono());
-        empleado.setFechaNacimiento(empleadoDetails.getFechaNacimiento());
-        empleado.setLugarResidencia(empleadoDetails.getLugarResidencia());
-        empleado.setDireccionCasa(empleadoDetails.getDireccionCasa());
-        empleado.setBarrio(empleadoDetails.getBarrio());
-        empleado.setEstado(empleadoDetails.isEstado());
         empleado.setCodigoEmpleado(empleadoDetails.getCodigoEmpleado());
         empleado.setCargo(empleadoDetails.getCargo());
         empleado.setTipoContrato(empleadoDetails.getTipoContrato());
@@ -80,12 +66,6 @@ public class EmpleadoController {
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/empleados/verificar-cedula/{cedula}")
-    public ResponseEntity<Boolean> verificarCedulaExistente(@PathVariable String cedula) {
-        boolean existe = empleadoRepository.existsByNumeroIdentificacion(cedula);  // Verifica si existe la cédula en la base de datos
-        return ResponseEntity.ok(existe);  // Retorna true si existe, false si no existe
     }
 }
 

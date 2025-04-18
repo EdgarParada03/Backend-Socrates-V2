@@ -3,11 +3,12 @@ package com.example.SocratesBackend.modelos;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+@Entity(name = "empleados")
+public class Empleado {
 
-@Entity
-@DiscriminatorValue("EMPLEADO")
-public class Empleado extends Persona{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     @Column(name = "codigo_empleado")
     private String codigoEmpleado;
@@ -36,10 +37,10 @@ public class Empleado extends Persona{
     public Empleado() {
     }
 
-
-
-    public Empleado(Long id, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String tipoIdentificacion, String numeroIdentificacion, String sexo, String correoElectronico, String telefono, Date fechaNacimiento, String lugarResidencia, String direccionCasa, String barrio, boolean estado, String codigoEmpleado, String cargo, String tipoContrato, String hojaDeVida, String referenciaLaboral, String contactoEmergenciaNombre, String contactoEmergenciaParentesco, String contactoEmergenciaTelefono) {
-        super(id, primerNombre, segundoNombre, primerApellido, segundoApellido, tipoIdentificacion, numeroIdentificacion, sexo, correoElectronico, telefono, fechaNacimiento, lugarResidencia, direccionCasa, barrio, estado);
+    public Empleado(long id, String codigoEmpleado, String cargo, String tipoContrato, String hojaDeVida,
+                    String referenciaLaboral, String contactoEmergenciaNombre,
+                    String contactoEmergenciaParentesco, String contactoEmergenciaTelefono) {
+        this.id = id;
         this.codigoEmpleado = codigoEmpleado;
         this.cargo = cargo;
         this.tipoContrato = tipoContrato;
@@ -48,6 +49,14 @@ public class Empleado extends Persona{
         this.contactoEmergenciaNombre = contactoEmergenciaNombre;
         this.contactoEmergenciaParentesco = contactoEmergenciaParentesco;
         this.contactoEmergenciaTelefono = contactoEmergenciaTelefono;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getCodigoEmpleado() {
