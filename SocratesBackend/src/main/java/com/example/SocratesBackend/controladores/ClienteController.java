@@ -2,10 +2,12 @@ package com.example.SocratesBackend.controladores;
 
 import com.example.SocratesBackend.modelos.Cliente;
 import com.example.SocratesBackend.repositorios.ClienteRepository;
+import com.example.SocratesBackend.servicios.ClienteService; // ✅ Importar el Service
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile; // ✅ Importar MultipartFile
 
 import java.util.*;
 
@@ -16,6 +18,9 @@ public class ClienteController {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private ClienteService clienteService; // ✅ INYECTAR ClienteService
 
     // Obtener todos los clientes
     @GetMapping("/clientes")
@@ -62,14 +67,13 @@ public class ClienteController {
             cliente.setFechaRegistro(clienteDetails.getFechaRegistro());
             cliente.setTipoCliente(clienteDetails.getTipoCliente());
 
-            // Guardar cliente actualizado
             Cliente updatedCliente = clienteRepository.save(cliente);
-
             return ResponseEntity.ok(updatedCliente);
+
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace(); // Para ver el error en consola
+            e.printStackTrace();
             return ResponseEntity.status(500).body("Error al actualizar el cliente: " + e.getMessage());
         }
     }
@@ -89,7 +93,18 @@ public class ClienteController {
     // Verificar si la cédula ya está registrada
     @GetMapping("/clientes/verificar-cedula/{cedula}")
     public ResponseEntity<Boolean> verificarCedulaExistente(@PathVariable String cedula) {
-        boolean existe = clienteRepository.existsByNumeroIdentificacion(cedula);  // Verifica si existe la cédula en la base de datos
-        return ResponseEntity.ok(existe);  // Retorna true si existe, false si no existe
+        boolean existe = clienteRepository.existsByNumeroIdentificacion(cedula);
+        return ResponseEntity.ok(existe);
+    }
+
+    // ✅ Importar clientes desde archivo Excel
+    @PostMapping("/importar-excel")
+    public ResponseEntity<String> importarClientesDesdeExcel(@RequestParam("file") MultipartFile file) {
+        try {
+            clienteService.importarClientes(file);
+            return ResponseEntity.ok("Clientes importados correctamente.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error al importar clientes: " + e.getMessage());
+        }
     }
 }
