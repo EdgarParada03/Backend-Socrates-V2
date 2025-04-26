@@ -43,6 +43,21 @@ public class EmpleadoController {
         Empleado empleado = empleadoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Empleado no existe con id: " + id));
 
+
+        empleado.setPrimerNombre(empleadoDetails.getPrimerNombre());
+        empleado.setSegundoNombre(empleadoDetails.getSegundoNombre());
+        empleado.setPrimerApellido(empleadoDetails.getPrimerApellido());
+        empleado.setSegundoApellido(empleadoDetails.getSegundoApellido());
+        empleado.setTipoIdentificacion(empleadoDetails.getTipoIdentificacion());
+        empleado.setNumeroIdentificacion(empleadoDetails.getNumeroIdentificacion());
+        empleado.setSexo(empleadoDetails.getSexo());
+        empleado.setCorreoElectronico(empleadoDetails.getCorreoElectronico());
+        empleado.setTelefono(empleadoDetails.getTelefono());
+        empleado.setFechaNacimiento(empleadoDetails.getFechaNacimiento());
+        empleado.setLugarResidencia(empleadoDetails.getLugarResidencia());
+        empleado.setDireccionCasa(empleadoDetails.getDireccionCasa());
+        empleado.setBarrio(empleadoDetails.getBarrio());
+        empleado.setEstado(empleadoDetails.isEstado());
         empleado.setCodigoEmpleado(empleadoDetails.getCodigoEmpleado());
         empleado.setCargo(empleadoDetails.getCargo());
         empleado.setTipoContrato(empleadoDetails.getTipoContrato());

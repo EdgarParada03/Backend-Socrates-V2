@@ -21,7 +21,7 @@ public class Servicio {
     private String descripcion;
 
     @Column(name = "hora_servicio", nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private LocalTime horaServicio;
 
     @Column(name = "estado", nullable = false)
