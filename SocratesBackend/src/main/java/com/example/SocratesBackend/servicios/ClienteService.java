@@ -31,7 +31,13 @@ public class ClienteService {
 
                 String numeroIdentificacion = getCellValue(row.getCell(5));
 
-                if (numeroIdentificacion != null && !clienteRepository.existsByNumeroIdentificacion(numeroIdentificacion)) {
+                if (numeroIdentificacion != null) {
+                    // Verificar si ya existe un cliente con esa cédula en la base de datos
+                    if (clienteRepository.existsByNumeroIdentificacion(numeroIdentificacion)) {
+                        // Si ya existe, omitir este cliente
+                        continue; // Salta al siguiente cliente
+                    }
+
                     Cliente cliente = new Cliente();
                     cliente.setPrimerNombre(getCellValue(row.getCell(0)));
                     cliente.setSegundoNombre(getCellValue(row.getCell(1)));
@@ -49,11 +55,12 @@ public class ClienteService {
                     cliente.setFechaRegistro(getLocalDateValue(row.getCell(13)));
                     cliente.setTipoCliente(getCellValue(row.getCell(14)));
 
-                    clienteRepository.save(cliente);
+                    clienteRepository.save(cliente); // Guardar el cliente si no existe
                 }
             }
         }
     }
+
 
     private String getCellValue(Cell cell) {
         if (cell == null) return null;
