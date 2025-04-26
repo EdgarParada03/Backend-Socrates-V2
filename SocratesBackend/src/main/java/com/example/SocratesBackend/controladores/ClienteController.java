@@ -2,17 +2,17 @@ package com.example.SocratesBackend.controladores;
 
 import com.example.SocratesBackend.modelos.Cliente;
 import com.example.SocratesBackend.repositorios.ClienteRepository;
-import com.example.SocratesBackend.servicios.ClienteService; // ✅ Importar el Service
+import com.example.SocratesBackend.servicios.ClienteService;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile; // ✅ Importar MultipartFile
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200") // Se aplica a TODO el controlador
 @RequestMapping("/api/v1")
 public class ClienteController {
 
@@ -20,7 +20,7 @@ public class ClienteController {
     private ClienteRepository clienteRepository;
 
     @Autowired
-    private ClienteService clienteService; // ✅ INYECTAR ClienteService
+    private ClienteService clienteService;
 
     // Obtener todos los clientes
     @GetMapping("/clientes")
@@ -49,7 +49,6 @@ public class ClienteController {
             Cliente cliente = clienteRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Cliente no existe con el id: " + id));
 
-            // Actualizar los campos
             cliente.setPrimerNombre(clienteDetails.getPrimerNombre());
             cliente.setSegundoNombre(clienteDetails.getSegundoNombre());
             cliente.setPrimerApellido(clienteDetails.getPrimerApellido());
@@ -97,8 +96,8 @@ public class ClienteController {
         return ResponseEntity.ok(existe);
     }
 
-    // ✅ Importar clientes desde archivo Excel
-    @PostMapping("/importar-excel")
+    // Importar clientes desde archivo Excel
+    @PostMapping("/clientes/importar-excel")
     public ResponseEntity<String> importarClientesDesdeExcel(@RequestParam("file") MultipartFile file) {
         try {
             clienteService.importarClientes(file);
