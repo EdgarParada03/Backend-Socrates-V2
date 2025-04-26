@@ -42,8 +42,7 @@ public class ClienteService {
                     cliente.setSexo(getCellValue(row.getCell(6)));
                     cliente.setCorreoElectronico(getCellValue(row.getCell(7)));
                     cliente.setTelefono(getCellValue(row.getCell(8)));
-                    // cliente.setFechaNacimiento(getLocalDateValue(row.getCell(9)));  --> Eliminado
-                    cliente.setLugarResidencia(getCellValue(row.getCell(9))); // Ajustamos la posición
+                    cliente.setLugarResidencia(getCellValue(row.getCell(9)));
                     cliente.setDireccionCasa(getCellValue(row.getCell(10)));
                     cliente.setBarrio(getCellValue(row.getCell(11)));
                     cliente.setEstado(getBooleanValue(row.getCell(12)));
@@ -78,10 +77,23 @@ public class ClienteService {
 
     private LocalDate getLocalDateValue(Cell cell) {
         if (cell == null) return null;
-        if (cell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell)) {
-            Instant instant = cell.getDateCellValue().toInstant();
-            return instant.atZone(ZoneId.systemDefault()).toLocalDate();
+
+        try {
+            // Verificar si la celda es una fecha (numérica) y si está correctamente formateada
+            if (cell.getCellType() == CellType.NUMERIC && org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted(cell)) {
+                Instant instant = cell.getDateCellValue().toInstant();
+                return instant.atZone(ZoneId.systemDefault()).toLocalDate();
+            } else if (cell.getCellType() == CellType.STRING) {
+                String cellValue = cell.getStringCellValue().trim();
+                if (!cellValue.isEmpty()) {
+                    // Intentar convertir la fecha si es un String
+                    return LocalDate.parse(cellValue);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error al procesar la fecha: " + e.getMessage());
         }
-        return null;
+
+        return null; // Retorna null si no se pudo procesar correctamente la fecha
     }
 }
