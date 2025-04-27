@@ -4,9 +4,17 @@ import com.example.SocratesBackend.modelos.Empleado;
 import com.example.SocratesBackend.repositorios.EmpleadoRepository;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 @RestController
@@ -16,6 +24,8 @@ public class EmpleadoController {
 
     @Autowired
     private EmpleadoRepository empleadoRepository;
+
+
 
     // Get all empleados
     @GetMapping("/empleados")
@@ -82,5 +92,90 @@ public class EmpleadoController {
         response.put("deleted", Boolean.TRUE);
         return ResponseEntity.ok(response);
     }
+
+    /*@PostMapping("/{id}/hoja-vida")
+    public ResponseEntity<String> subirHojaDeVida(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        try {
+            if (!file.getContentType().equals("application/pdf")) {
+                return ResponseEntity.badRequest().body("Solo se permiten archivos PDF.");
+            }
+
+            // Crear carpeta si no existe
+            Path uploadPath = Paths.get("uploads");
+            Files.createDirectories(uploadPath);
+
+            // Nombre seguro
+            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            Path filePath = uploadPath.resolve(fileName);
+
+            // Guardar archivo
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            // Buscar empleado y asociar
+            Empleado empleado = empleadoRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Empleado no encontrado"));
+
+            empleado.setHojaDeVida("/uploads/" + fileName);
+            empleadoRepository.save(empleado);
+
+            return ResponseEntity.ok("/uploads/" + fileName);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al subir la hoja de vida.");
+        }
+    }
+
+
+    @PostMapping("/hoja-vida-temporal")
+    public ResponseEntity<String> uploadHojaDeVida(@RequestParam("file") MultipartFile file) {
+        try {
+            if (!file.getContentType().equals("application/pdf")) {
+                return ResponseEntity.badRequest().body("Solo se permiten archivos PDF.");
+            }
+
+            // Crear carpeta si no existe
+            Path uploadPath = Paths.get("uploads");
+            Files.createDirectories(uploadPath);
+
+            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            Path filePath = uploadPath.resolve(fileName);
+
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            return ResponseEntity.ok("/uploads/" + fileName);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al subir el archivo.");
+        }
+    }
+
+
+    @PostMapping("/hoja-vida")
+    public ResponseEntity<String> subirHojaDeVidaTemporal(@RequestParam("file") MultipartFile file) {
+        try {
+            if (!file.getContentType().equals("application/pdf")) {
+                return ResponseEntity.badRequest().body("Solo se permiten archivos PDF.");
+            }
+
+            Path uploadPath = Paths.get("uploads");
+            Files.createDirectories(uploadPath);
+
+            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            Path filePath = uploadPath.resolve(fileName);
+
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            return ResponseEntity.ok("/uploads/" + fileName);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al subir el archivo temporal.");
+        }
+    }*/
+
+
+
 }
 
