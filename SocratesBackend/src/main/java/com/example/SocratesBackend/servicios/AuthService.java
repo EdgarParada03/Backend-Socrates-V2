@@ -25,12 +25,15 @@ public class AuthService {
         if (empleado.isPresent() && empleado.get().getCodigoEmpleado().equals(password)) {
             Empleado usuario = empleado.get();
             response.put("message", "Login successful");
-            response.put("userType", usuario.getCargo().toLowerCase()); // administrador o secretaria
+            response.put("userType", usuario.getCargo().toLowerCase()); // Por ejemplo, "secretaria" o "admin"
+            response.put("primerNombre", usuario.getPrimerNombre());    // Se envía el primer nombre
+            response.put("primerApellido", usuario.getPrimerApellido());// Se envía el primer apellido
         } else {
             response.put("message", "Invalid credentials");
         }
 
         return response;
     }
+
 
 }

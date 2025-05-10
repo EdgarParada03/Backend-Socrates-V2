@@ -19,6 +19,11 @@ public class TipoPlanController {
     @Autowired
     private TipoPlanRepository tipoPlanRepository;
 
+    @GetMapping("/tipos_planes/count")
+    public long getTipoPlanCount() {
+        return tipoPlanRepository.count();
+    }
+
     //Get all tipo_planes
     @GetMapping("/tipos_planes")
     public List<TipoPlan> getAllTipoPlan(){
