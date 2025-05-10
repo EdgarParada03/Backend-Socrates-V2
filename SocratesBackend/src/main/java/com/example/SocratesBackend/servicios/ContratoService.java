@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class ContratoService {
@@ -43,9 +43,12 @@ public class ContratoService {
                 Row row = sheet.getRow(i);
                 if (row == null) continue;
 
-                String cedula = getCellValue(row.getCell(0));
-                Cliente cliente = clienteRepository.findByNumeroIdentificacion(cedula);
-                if (cliente == null) continue;
+                String cedulaCliente = getCellValue(row.getCell(0));
+                Cliente cliente = clienteRepository.findByNumeroIdentificacion(cedulaCliente);
+                if (cliente == null) {
+                    System.out.println("Cliente con cédula " + cedulaCliente + " no encontrado.");
+                    continue;
+                }
 
                 Servicio servicio = new Servicio();
                 servicio.setDescripcion(getCellValue(row.getCell(5)));
@@ -54,11 +57,23 @@ public class ContratoService {
                 servicio.setEstado(getCellValue(row.getCell(8)));
                 servicio.setFechaRegistro(getLocalDateValue(row.getCell(11)));
 
-                Long tipoPlanId = Long.parseLong(getCellValue(row.getCell(9)));
-                servicio.setTipoPlan(tipoPlanRepository.findById(tipoPlanId).orElse(null));
+                // Buscar tipo de plan
+                String nombreTipoPlan = getCellValue(row.getCell(9));
+                Optional<TipoPlan> tipoPlan = tipoPlanRepository.findByNombre(nombreTipoPlan);
+                if (tipoPlan.isEmpty()) {
+                    System.out.println("Tipo de plan '" + nombreTipoPlan + "' no encontrado.");
+                    continue;
+                }
+                servicio.setTipoPlan(tipoPlan.get());
 
-                Long tecnicoId = Long.parseLong(getCellValue(row.getCell(10)));
-                servicio.setTecnico(empleadoRepository.findById(tecnicoId).orElse(null));
+                // Buscar técnico por cédula
+                String cedulaTecnico = getCellValue(row.getCell(10));
+                Optional<Empleado> tecnico = empleadoRepository.findByNumeroIdentificacion(cedulaTecnico);
+                if (tecnico.isEmpty()) {
+                    System.out.println("Técnico con cédula " + cedulaTecnico + " no encontrado.");
+                    continue;
+                }
+                servicio.setTecnico(tecnico.get());
 
                 servicioRepository.save(servicio);
 
@@ -79,7 +94,13 @@ public class ContratoService {
         if (cell == null) return null;
         return switch (cell.getCellType()) {
             case STRING -> cell.getStringCellValue().trim();
-            case NUMERIC -> String.valueOf((long) cell.getNumericCellValue());
+            case NUMERIC -> {
+                if (DateUtil.isCellDateFormatted(cell)) {
+                    yield cell.getDateCellValue().toString();
+                } else {
+                    yield String.valueOf((long) cell.getNumericCellValue());
+                }
+            }
             case BOOLEAN -> String.valueOf(cell.getBooleanCellValue());
             default -> null;
         };
@@ -131,5 +152,4 @@ public class ContratoService {
     public Servicio guardarServicioDesdeContrato(Servicio servicio) {
         return servicioRepository.save(servicio);
     }
-
 }
