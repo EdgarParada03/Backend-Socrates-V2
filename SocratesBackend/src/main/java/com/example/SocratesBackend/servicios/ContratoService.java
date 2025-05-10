@@ -33,6 +33,28 @@ public class ContratoService {
     @Autowired
     private EmpleadoRepository empleadoRepository;
 
+    public Cliente obtenerClienteCompleto(long id) {
+        // Con getReferenceById() se obtiene un proxy sin realizar consulta inmediata
+        return clienteRepository.getReferenceById(id);
+    }
+
+    public Servicio obtenerServicioCompleto(long id) {
+        return servicioRepository.getReferenceById(id);
+    }
+
+    public Contrato crearContrato(Contrato contrato) {
+        // Obtener una referencia administrada del Cliente y Servicio a partir de sus IDs.
+        // Esto no hace una consulta inmediata, pero garantiza que JPA gestione la relación.
+        Cliente cliente = clienteRepository.getReferenceById(contrato.getCliente().getId());
+        Servicio servicio = servicioRepository.getReferenceById(contrato.getServicio().getId());
+        contrato.setCliente(cliente);
+        contrato.setServicio(servicio);
+
+        // Aquí podrías agregar validaciones adicionales o conversión de fechas si lo requieres.
+
+        return contratoRepository.save(contrato);
+    }
+
     public void importarContratosDesdeExcel(MultipartFile file) throws Exception {
         try (InputStream is = file.getInputStream();
              Workbook workbook = new XSSFWorkbook(is)) {

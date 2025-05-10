@@ -51,15 +51,21 @@ public class ContratoController {
                 contrato.setServicio(servicio);
             }
 
-            // Guardar el contrato
-            Contrato contratoGuardado = contratoRepository.save(contrato);
-            return ResponseEntity.ok(contratoGuardado); // Retorna el contrato creado si no existía uno activo
+            // Agregar líneas para obtener las referencias completas:
+            // Se asume que el objeto "contrato" trae en su propiedad "cliente" un objeto con al menos el ID.
+            contrato.setCliente(contratoService.obtenerClienteCompleto(contrato.getCliente().getId()));
+            contrato.setServicio(contratoService.obtenerServicioCompleto(contrato.getServicio().getId()));
+
+            // En lugar de guardar directamente, llamamos al método del servicio que se encarga de obtener las referencias completas
+            Contrato contratoGuardado = contratoService.crearContrato(contrato);
+            return ResponseEntity.ok(contratoGuardado);
 
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body(null); // Retorna un 500 en caso de error
         }
     }
+
 
 
 
