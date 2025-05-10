@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:4200"}, allowCredentials = "true")
@@ -31,26 +32,37 @@ public class ContratoController {
         return contratoRepository.findAll();
     }
 
-    // Crear contrato (y servicio si viene completo)
     @PostMapping("/contratos")
     public ResponseEntity<Contrato> createContrato(@RequestBody Contrato contrato) {
         try {
-            Servicio servicio = contrato.getServicio();
+            // Verificar si ya existe un contrato activo para el cliente
+            Optional<Contrato> contratoExistente = contratoRepository.findByClienteAndEstado(contrato.getCliente(), true);
 
-            // Validar si el servicio viene completo y no tiene ID aún (es nuevo)
+            // Si ya existe un contrato activo para este cliente, omitir la creación
+            if (contratoExistente.isPresent()) {
+                return ResponseEntity.noContent().build(); // Retorna un 204 No Content si ya existe un contrato activo
+            }
+
+            // Si no existe un contrato activo, proceder con la creación
+            Servicio servicio = contrato.getServicio();
             if (servicio != null && servicio.getId() == 0) {
+                // Si el servicio no existe, guardarlo
                 servicio = contratoService.guardarServicioDesdeContrato(servicio);
                 contrato.setServicio(servicio);
             }
 
+            // Guardar el contrato
             Contrato contratoGuardado = contratoRepository.save(contrato);
-            return ResponseEntity.ok(contratoGuardado);
+            return ResponseEntity.ok(contratoGuardado); // Retorna el contrato creado si no existía uno activo
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body(null);
+            return ResponseEntity.status(500).body(null); // Retorna un 500 en caso de error
         }
     }
+
+
+
 
 
     // Obtener contrato por ID
