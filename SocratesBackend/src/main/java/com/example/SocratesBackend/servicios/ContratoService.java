@@ -50,6 +50,13 @@ public class ContratoService {
                     continue;
                 }
 
+                // Verificar si el cliente ya tiene un contrato activo
+                Optional<Contrato> contratoExistente = contratoRepository.findByClienteAndEstado(cliente, true);
+                if (contratoExistente.isPresent()) {
+                    System.out.println("El cliente con cédula " + cedulaCliente + " ya tiene un contrato activo. Omitiendo creación.");
+                    continue;  // Omitir este cliente y continuar con el siguiente contrato
+                }
+
                 Servicio servicio = new Servicio();
                 servicio.setDescripcion(getCellValue(row.getCell(5)));
                 servicio.setFechaServicio(getLocalDateValue(row.getCell(6)));
@@ -89,6 +96,7 @@ public class ContratoService {
             }
         }
     }
+
 
     private String getCellValue(Cell cell) {
         if (cell == null) return null;
