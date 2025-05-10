@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import com.example.SocratesBackend.servicios.EmpleadoService;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,6 +25,8 @@ public class EmpleadoController {
 
     @Autowired
     private EmpleadoRepository empleadoRepository;
+    @Autowired
+    private EmpleadoService empleadoService;
 
     @GetMapping("/empleados/count")
     public long getEmpleadoCount() {
@@ -39,9 +42,8 @@ public class EmpleadoController {
     // Create empleado
     @PostMapping("/empleados")
     public Empleado createEmpleado(@RequestBody Empleado empleado) {
-        return empleadoRepository.save(empleado);
+        empleado.setCodigoEmpleado(empleadoService.generarCodigoEmpleado());return empleadoRepository.save(empleado);
     }
-
     // Get empleado by id
     @GetMapping("/empleados/{id}")
     public ResponseEntity<Empleado> getEmpleadoById(@PathVariable Long id) {
@@ -79,6 +81,9 @@ public class EmpleadoController {
         empleado.setContactoEmergenciaNombre(empleadoDetails.getContactoEmergenciaNombre());
         empleado.setContactoEmergenciaParentesco(empleadoDetails.getContactoEmergenciaParentesco());
         empleado.setContactoEmergenciaTelefono(empleadoDetails.getContactoEmergenciaTelefono());
+        empleado.setFechaIngreso(empleadoDetails.getFechaIngreso());
+        empleado.setFechaRetiro(empleadoDetails.getFechaRetiro());
+        empleado.setSueldo(empleadoDetails.getSueldo());
 
         Empleado updatedEmpleado = empleadoRepository.save(empleado);
         return ResponseEntity.ok(updatedEmpleado);
@@ -177,7 +182,11 @@ public class EmpleadoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al subir el archivo temporal.");
         }
     }*/
-
+    @GetMapping("/empleados/nuevo-codigo")
+    public ResponseEntity<String> obtenerNuevoCodigo() {
+        String nuevoCodigo = empleadoService.generarCodigoEmpleado();
+        return ResponseEntity.ok(nuevoCodigo);
+    }
 
 
 }

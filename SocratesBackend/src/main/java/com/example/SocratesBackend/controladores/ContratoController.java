@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import com.example.SocratesBackend.servicios.EmpleadoService;
+
 
 import java.util.HashMap;
 import java.util.List;
@@ -88,6 +90,7 @@ public class ContratoController {
 
             contrato.setCliente(contratoDetails.getCliente());
             contrato.setServicio(contratoDetails.getServicio());
+            contrato.setFechaRegistro(contratoDetails.getFechaRegistro());
             contrato.setFechaInicio(contratoDetails.getFechaInicio());
             contrato.setFechaFin(contratoDetails.getFechaFin());
             contrato.setEstado(contratoDetails.isEstado());

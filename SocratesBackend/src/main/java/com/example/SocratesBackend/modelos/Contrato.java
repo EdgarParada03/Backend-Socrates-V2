@@ -27,6 +27,10 @@ public class Contrato {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "UTC")
     private Date fechaFin;
 
+    @Column(name = "fecha_registro")
+    private String fechaRegistro;
+
+
     @Column(name = "estado")
     private boolean estado;
 
@@ -36,12 +40,13 @@ public class Contrato {
     public Contrato() {
     }
 
-    public Contrato(long id, Cliente cliente, Servicio servicio, Date fechaInicio, Date fechaFin, boolean estado, String duracion) {
+    public Contrato(long id, Cliente cliente, Servicio servicio, Date fechaInicio, Date fechaFin, String fechaRegistro, boolean estado, String duracion) {
         this.id = id;
         this.cliente = cliente;
         this.servicio = servicio;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
+        this.fechaRegistro = fechaRegistro;
         this.estado = estado;
         this.duracion = duracion;
     }
@@ -84,6 +89,14 @@ public class Contrato {
 
     public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
+    }
+
+    public String getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(String fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
     }
 
     public boolean isEstado() {

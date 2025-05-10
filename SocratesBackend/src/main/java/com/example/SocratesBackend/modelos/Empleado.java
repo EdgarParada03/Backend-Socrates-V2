@@ -35,10 +35,20 @@ public class Empleado extends Persona{
     @Column(name = "contacto_emergencia_telefono")
     private String contactoEmergenciaTelefono;
 
+    @Column(name = "fecha_ingreso")
+    private String fechaIngreso;
+
+    @Column(name = "fecha_retiro")
+    private String fechaRetiro;
+
+    @Column(name = "sueldo")
+    private String sueldo;
+
+
     public Empleado() {
     }
 
-    public Empleado(Long id, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String tipoIdentificacion, String numeroIdentificacion, String sexo, String correoElectronico, String telefono, Date fechaNacimiento, String lugarResidencia, String direccionCasa, String barrio, boolean estado, String codigoEmpleado, String cargo, String tipoContrato, String hojaDeVida, String referenciaLaboral, String contactoEmergenciaNombre, String contactoEmergenciaParentesco, String contactoEmergenciaTelefono) {
+    public Empleado(Long id, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String tipoIdentificacion, String numeroIdentificacion, String sexo, String correoElectronico, String telefono, Date fechaNacimiento, String lugarResidencia, String direccionCasa, String barrio, boolean estado, String codigoEmpleado, String cargo, String tipoContrato, String hojaDeVida, String referenciaLaboral, String contactoEmergenciaNombre, String contactoEmergenciaParentesco, String contactoEmergenciaTelefono, String fechaIngreso, String fechaRetiro, String sueldo) {
         super(id, primerNombre, segundoNombre, primerApellido, segundoApellido, tipoIdentificacion, numeroIdentificacion, sexo, correoElectronico, telefono, fechaNacimiento, lugarResidencia, direccionCasa, barrio, estado);
         this.codigoEmpleado = codigoEmpleado;
         this.cargo = cargo;
@@ -48,6 +58,9 @@ public class Empleado extends Persona{
         this.contactoEmergenciaNombre = contactoEmergenciaNombre;
         this.contactoEmergenciaParentesco = contactoEmergenciaParentesco;
         this.contactoEmergenciaTelefono = contactoEmergenciaTelefono;
+        this.fechaIngreso = fechaIngreso;
+        this.fechaRetiro = fechaRetiro;
+        this.sueldo = sueldo;
     }
 
     public String getCodigoEmpleado() {
@@ -112,6 +125,30 @@ public class Empleado extends Persona{
 
     public void setContactoEmergenciaTelefono(String contactoEmergenciaTelefono) {
         this.contactoEmergenciaTelefono = contactoEmergenciaTelefono;
+    }
+
+    public String getFechaIngreso() {
+        return fechaIngreso;
+    }
+
+    public void setFechaIngreso(String fechaIngreso) {
+        this.fechaIngreso = fechaIngreso;
+    }
+
+    public String getFechaRetiro() {
+        return fechaRetiro;
+    }
+
+    public void setFechaRetiro(String fechaRetiro) {
+        this.fechaRetiro = fechaRetiro;
+    }
+
+    public String getSueldo() {
+        return sueldo;
+    }
+
+    public void setSueldo(String sueldo) {
+        this.sueldo = sueldo;
     }
 }
 
