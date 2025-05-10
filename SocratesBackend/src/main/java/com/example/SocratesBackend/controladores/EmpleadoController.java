@@ -25,7 +25,10 @@ public class EmpleadoController {
     @Autowired
     private EmpleadoRepository empleadoRepository;
 
-
+    @GetMapping("/empleados/count")
+    public long getEmpleadoCount() {
+        return empleadoRepository.count();
+    }
 
     // Get all empleados
     @GetMapping("/empleados")

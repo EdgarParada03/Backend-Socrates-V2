@@ -19,6 +19,11 @@ public class ClienteController {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    @GetMapping("/clientes/count")
+    public long getClienteCount() {
+        return clienteRepository.count();
+    }
+
     @Autowired
     private ClienteService clienteService;
 
