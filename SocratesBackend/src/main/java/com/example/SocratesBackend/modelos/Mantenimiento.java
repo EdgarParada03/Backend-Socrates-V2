@@ -13,9 +13,9 @@ public class Mantenimiento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    // @ManyToOne
-    // @JoinColumn(name = "soporte_id")
-    // private Sopor soporte; // 🔧 Comentado porque aún no existe
+    @ManyToOne
+    @JoinColumn(name = "soporte_id")
+    private Soporte soporte;
 
     @Column(name = "descripcion")
     private String descripcion;
@@ -30,23 +30,21 @@ public class Mantenimiento {
     @JoinColumn(name = "tecnico_id")
     private Empleado tecnico;
 
-    // @OneToMany
-    // @JoinColumn(name = "mantenimiento_id")
-    // private List<Producto> productos; // 🔧 Comentado porque aún no existe
+    @OneToMany
+    @JoinColumn(name = "producto_id")
+    private List<Producto> productos;
 
     public Mantenimiento() {
     }
 
-    // 🔧 Comentado el constructor con `soporte` y `productos`, para evitar errores por clases inexistentes
-    // public Mantenimiento(long id, Sopor soporte, String descripcion, Date fechaProgramada, String estado, Empleado tecnico, List<Producto> productos) {
-    public Mantenimiento(long id, String descripcion, Date fechaProgramada, String estado, Empleado tecnico) {
+    public Mantenimiento(long id, Soporte soporte, String descripcion, Date fechaProgramada, String estado, Empleado tecnico, List<Producto> productos) {
         this.id = id;
-        // this.soporte = soporte;
+        this.soporte = soporte;
         this.descripcion = descripcion;
         this.fechaProgramada = fechaProgramada;
         this.estado = estado;
         this.tecnico = tecnico;
-        // this.productos = productos;
+        this.productos = productos;
     }
 
     public long getId() {
@@ -57,13 +55,13 @@ public class Mantenimiento {
         this.id = id;
     }
 
-    // public Sopor getSoporte() {
-    //     return soporte;
-    // }
+     public Soporte getSoporte() {
+         return soporte;
+    }
 
-    // public void setSoporte(Sopor soporte) {
-    //     this.soporte = soporte;
-    // }
+    public void setSoporte(Soporte soporte) {
+        this.soporte = soporte;
+    }
 
     public String getDescripcion() {
         return descripcion;
@@ -97,11 +95,11 @@ public class Mantenimiento {
         this.tecnico = tecnico;
     }
 
-    // public List<Producto> getProductos() {
-    //     return productos;
-    // }
+    public List<Producto> getProductos() {
+        return productos;
+    }
 
-    // public void setProductos(List<Producto> productos) {
-    //     this.productos = productos;
-    // }
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
+    }
 }
