@@ -55,6 +55,7 @@ public class SoporteController {
         soporte.setFechaSolicitud(soporteDetails.getFechaSolicitud());
         soporte.setEstado(soporteDetails.getEstado());
         soporte.setTecnico(soporteDetails.getTecnico());
+        soporte.setFechaRegistro(soporteDetails.getFechaRegistro());
 
         Soporte updatedSoporte = soporteRepository.save(soporte);
         return ResponseEntity.ok(updatedSoporte);

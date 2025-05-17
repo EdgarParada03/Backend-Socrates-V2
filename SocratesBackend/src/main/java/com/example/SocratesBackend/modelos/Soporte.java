@@ -23,6 +23,11 @@ public class Soporte {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "UTC")
     private Date fechaSolicitud;
 
+
+    @Column(name = "fecha_registro", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "UTC")
+    private Date fechaRegistro;
+
     @Column(name = "estado")
     private String estado;
 
@@ -33,11 +38,12 @@ public class Soporte {
     public Soporte() {
     }
 
-    public Soporte(long id, Cliente cliente, String descripcion, Date fechaSolicitud, String estado, Empleado tecnico) {
+    public Soporte(long id, Cliente cliente, String descripcion, Date fechaSolicitud, Date fechaRegistro, String estado, Empleado tecnico) {
         this.id = id;
         this.cliente = cliente;
         this.descripcion = descripcion;
         this.fechaSolicitud = fechaSolicitud;
+        this.fechaRegistro = fechaRegistro;
         this.estado = estado;
         this.tecnico = tecnico;
     }
@@ -72,6 +78,14 @@ public class Soporte {
 
     public void setFechaSolicitud(Date fechaSolicitud) {
         this.fechaSolicitud = fechaSolicitud;
+    }
+
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
     }
 
     public String getEstado() {
