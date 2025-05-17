@@ -1,5 +1,6 @@
 package com.example.SocratesBackend.modelos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import java.util.Date;
 import jakarta.persistence.*;
@@ -20,6 +21,7 @@ public class Mantenimiento {
     @Column(name = "descripcion")
     private String descripcion;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @Column(name = "fecha_programada")
     private Date fechaProgramada;
 
