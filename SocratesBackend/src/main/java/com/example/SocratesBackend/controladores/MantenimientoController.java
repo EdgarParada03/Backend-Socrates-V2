@@ -58,7 +58,7 @@ public class MantenimientoController {
             productoDB.setCantidad(productoDB.getCantidad() + 1); // devolver 1 unidad
             productoRepository.save(productoDB);
         }
-
+//d
         // 🟢 2. Descontar productos nuevos del inventario
         for (Producto productoNuevo : mantenimientoDetails.getProductos()) {
             Producto productoDB = productoRepository.findById(productoNuevo.getId())
